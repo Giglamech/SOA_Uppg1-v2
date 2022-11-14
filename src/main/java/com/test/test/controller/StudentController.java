@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
     private StudentService studentService;
 
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
 
-
-@PostMapping
+    @PostMapping
 @ResponseStatus(HttpStatus.CREATED)
         public Student addStudent(@RequestBody Student student){
     return studentService.addStudent(student);
