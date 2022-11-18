@@ -17,8 +17,8 @@ public class ModuleService {
     }
 
 
-    public List<Module> getModules(String courseNr){
-        return moduleRepository.findBy(courseNr);
+    public List<Module> getModules(String courseCode){
+        return moduleRepository.findBy(courseCode);
 
     }
 

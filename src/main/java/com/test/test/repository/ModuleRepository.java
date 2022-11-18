@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ModuleRepository extends MongoRepository<Module,String> {
     @Query("{courseCode: ?0}")
-    List<Module> findBy(String courseNr);
+    List<Module> findBy(String courseCode);
 
 
 }

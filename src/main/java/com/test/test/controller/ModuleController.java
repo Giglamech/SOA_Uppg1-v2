@@ -19,8 +19,8 @@ public class ModuleController {
         this.moduleService = moduleService;
     }
     @GetMapping("{module}")
-    public List<Module> getModules(String courseNr) {
-        return moduleService.getModules(courseNr);
+    public List<Module> getModules(String courseCode) {
+        return moduleService.getModules(courseCode);
 
     }
     @PostMapping
