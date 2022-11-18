@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Module {
     @Id
-    private String courseCode;
     private String moduleCode;
+    private String courseCode;
     private String moduleType;
 }
