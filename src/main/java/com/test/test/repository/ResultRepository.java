@@ -10,8 +10,8 @@ import java.util.Optional;
 
 
 public interface ResultRepository extends MongoRepository<Result,String> {
- @Query("{ssn: ?0, courseNr: ?1, module:?2, date: ?3, grade: ?4}")
- List<Result> findBy(String ssn, String courseNr, String module, String date, String grade);
+ @Query("{'ssn': ?0}")
+ List<Result> findByssn(String ssn);
 
 
 }

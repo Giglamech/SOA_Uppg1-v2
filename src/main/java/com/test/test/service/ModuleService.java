@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ModuleService {
@@ -18,11 +19,12 @@ public class ModuleService {
 
 
     public List<Module> getModules(String courseCode){
-        return moduleRepository.findBy(courseCode);
+        return moduleRepository.findBycourse(courseCode);
 
     }
 
     public Module addModule(Module module){
+        module.setModuleId(UUID.randomUUID().toString().split("-")[0]);
         return moduleRepository.save(module);
 
 

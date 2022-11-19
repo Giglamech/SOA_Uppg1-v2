@@ -18,8 +18,8 @@ public class ResultService {
     }
 
 
-    public Result getResult(String ssn){
-        return resultRepository.findById(ssn).get();
+    public List <Result> getResult(String ssn){
+    return resultRepository.findByssn(ssn);
 
     }
 

@@ -18,8 +18,8 @@ public class ModuleController {
     public ModuleController(ModuleService moduleService) {
         this.moduleService = moduleService;
     }
-    @GetMapping("{module}")
-    public List<Module> getModules(String courseCode) {
+    @GetMapping("{courseCode}")
+    public List<Module> getModules(@PathVariable String courseCode) {
         return moduleService.getModules(courseCode);
 
     }

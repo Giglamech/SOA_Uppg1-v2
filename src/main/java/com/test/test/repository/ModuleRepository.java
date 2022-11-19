@@ -10,8 +10,8 @@ import java.util.Optional;
 
 
 public interface ModuleRepository extends MongoRepository<Module,String> {
-    @Query("{courseCode: ?0}")
-    List<Module> findBy(String courseCode);
+    @Query("{'courseCode': ?0}")
+    List<Module> findBycourse(String courseCode);
 
 
 }

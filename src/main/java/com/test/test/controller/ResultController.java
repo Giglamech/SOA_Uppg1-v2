@@ -20,7 +20,7 @@ public class ResultController {
         this.resultservice = resultservice;
     }
 @GetMapping("{ssn}")
-public Result getResult(@PathVariable String ssn){
+public List <Result> getResult(@PathVariable String ssn){
     return resultservice.getResult(ssn);
 
 }
