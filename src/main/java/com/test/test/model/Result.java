@@ -12,9 +12,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Result {
     @Id
+    private String resultId;
     private String ssn;
     private String courseNr;
     private String module;
     private String date;
     private String grade;
+    private String status;
 }
