@@ -16,4 +16,5 @@ public class Module {
     private String moduleCode;
     private String courseCode;
     private String moduleType;
+    private String[] assignments;
 }
