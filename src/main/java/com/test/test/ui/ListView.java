@@ -51,6 +51,8 @@ public class ListView extends VerticalLayout {
 
     Grid<Result> grid = new Grid<>(Result.class);
         TextField filterText = new TextField();
+    ComboBox<Module> moduleComboBox = new ComboBox<>("Modul...");
+
         ResultView resultView;
 
         public ListView(UIService uiService) {
@@ -66,9 +68,19 @@ public class ListView extends VerticalLayout {
             add(getToolbar(), getContent());
 
             updateList();
+            updateToolBar();
 
 
         }
+
+    private void updateToolBar() {
+        moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
+        moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
+        moduleComboBox.setPlaceholder(filterText.getValue());
+        // moduleComboBox.setItem;
+
+
+    }
 
     private void updateList() {
             grid.setItems(uiService.findAllResults());
@@ -105,12 +117,12 @@ public class ListView extends VerticalLayout {
             filterText.setClearButtonVisible(true);
             filterText.setValueChangeMode(ValueChangeMode.LAZY);
             filterText.addValueChangeListener(e -> updateList());
+            filterText.addValueChangeListener(e -> updateToolBar());
+            moduleComboBox.setWidthFull();
 
             Button confirmButton = new Button("Sök");
             Button addContactButton = new Button("Add contact");
-            ComboBox<Module> moduleComboBox = new ComboBox<>("Modul...");
-            moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
-            moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
+
 
 
 

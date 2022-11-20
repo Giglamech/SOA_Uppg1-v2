@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.NonNull;
 
 @Document("Module")
 @Data
@@ -13,9 +14,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Module {
     @Id
     private String moduleId;
+    @NonNull
     private String moduleCode;
+    @NonNull
     private String courseCode;
+    @NonNull
     private String moduleType;
+    @NonNull
     private String[] assignments;
 
     public String getModuleId() {
