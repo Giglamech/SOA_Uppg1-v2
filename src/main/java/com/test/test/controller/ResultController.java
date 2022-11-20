@@ -19,11 +19,12 @@ public class ResultController {
     public ResultController(ResultService resultservice) {
         this.resultservice = resultservice;
     }
-@GetMapping("{ssn}")
-public List <Result> getResult(@PathVariable String ssn){
-    return resultservice.getResult(ssn);
+@GetMapping("{moduleNr}")
+public List <Result> getResult(@PathVariable String moduleNr){
+    return resultservice.getResult(moduleNr);
 
 }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Result  addResult(@RequestBody Result result){

@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface ResultRepository extends MongoRepository<Result,String> {
  @Query("{'ssn': ?0}")
  List<Result> findByssn(String ssn);
+ @Query("{'module': ?0}")
+ List<Result> findByModule(String moduleNr);
 
 
 }

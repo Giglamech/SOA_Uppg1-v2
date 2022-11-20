@@ -1,5 +1,6 @@
 package com.test.test.ui;
 
+import com.nimbusds.jose.shaded.json.JSONObject;
 import com.test.test.model.Module;
 import com.test.test.model.Result;
 import com.test.test.model.Student;
@@ -50,9 +51,11 @@ public class ListView extends VerticalLayout {
     }
 
     Grid<Result> grid = new Grid<>(Result.class);
-        TextField filterText = new TextField();
-    ComboBox<Module> moduleComboBox = new ComboBox<>("Modul...");
-
+        TextField filterText = new TextField("Kurskod");
+   ComboBox<Module> moduleComboBox = new ComboBox<>("Modul...");
+   TextField filterTextTwo = new TextField();
+    TextField filterTextThree = new TextField();
+    TextField  filterTextFour = new TextField();
         ResultView resultView;
 
         public ListView(UIService uiService) {
@@ -77,7 +80,20 @@ public class ListView extends VerticalLayout {
         moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
         moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
         moduleComboBox.setPlaceholder(filterText.getValue());
-        // moduleComboBox.setItem;
+
+
+
+
+    }
+
+    private String getModule(String module){
+
+
+        String a = module.substring(37);
+        String[] arr = a.split(",");
+        module = arr[0];
+        filterTextTwo.setValue(module);
+        return module;
 
 
     }
@@ -85,8 +101,11 @@ public class ListView extends VerticalLayout {
     private void updateList() {
             grid.setItems(uiService.findAllResults());
 
-    }
 
+    }
+private void updateFilterList(){
+    grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
+}
 
     private HorizontalLayout getContent() {
 
@@ -113,11 +132,12 @@ public class ListView extends VerticalLayout {
 
 
     private HorizontalLayout getToolbar() {
-            filterText.setPlaceholder("Filter by name...");
+            filterText.setPlaceholder("Sök på en kurskod...");
             filterText.setClearButtonVisible(true);
             filterText.setValueChangeMode(ValueChangeMode.LAZY);
             filterText.addValueChangeListener(e -> updateList());
             filterText.addValueChangeListener(e -> updateToolBar());
+            moduleComboBox.addValueChangeListener(e -> updateFilterList());
             moduleComboBox.setWidthFull();
 
             Button confirmButton = new Button("Sök");
@@ -126,7 +146,7 @@ public class ListView extends VerticalLayout {
 
 
 
-            HorizontalLayout toolbar = new HorizontalLayout(filterText, moduleComboBox, addContactButton, confirmButton);
+            HorizontalLayout toolbar = new HorizontalLayout(filterText, filterTextTwo, filterTextThree, filterTextFour, moduleComboBox, addContactButton, confirmButton);
             toolbar.addClassName("toolbar");
             return toolbar;
         }
