@@ -92,7 +92,6 @@ public class ListView extends VerticalLayout {
         String a = module.substring(37);
         String[] arr = a.split(",");
         module = arr[0];
-        filterTextTwo.setValue(module);
         return module;
 
 
@@ -140,13 +139,11 @@ private void updateFilterList(){
             moduleComboBox.addValueChangeListener(e -> updateFilterList());
             moduleComboBox.setWidthFull();
 
-            Button confirmButton = new Button("Sök");
-            Button addContactButton = new Button("Add contact");
 
 
 
 
-            HorizontalLayout toolbar = new HorizontalLayout(filterText, filterTextTwo, filterTextThree, filterTextFour, moduleComboBox, addContactButton, confirmButton);
+            HorizontalLayout toolbar = new HorizontalLayout(filterText, moduleComboBox);
             toolbar.addClassName("toolbar");
             return toolbar;
         }
