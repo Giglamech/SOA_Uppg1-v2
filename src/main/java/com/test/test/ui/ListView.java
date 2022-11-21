@@ -68,34 +68,51 @@ public class ListView extends VerticalLayout {
         }
 
     private void updateToolBar() {
-        moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
-        moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
-        moduleComboBox.setPlaceholder(filterText.getValue());
-
+            if (filterText.getValue().isEmpty()){
+                updateList();
+                moduleComboBox.clear();
+            }else {
+                moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
+                moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
+                moduleComboBox.setPlaceholder(filterText.getValue());
+            }
 
 
 
     }
 
-    private String getModule(String module){
+    private String getModule(String module) {
 
+      try {
+          String a = module.substring(37);
+          String[] arr = a.split(",");
+          module = arr[0];
+          return module;
+      }
+      catch (IndexOutOfBoundsException ignored){
 
-        String a = module.substring(37);
-        String[] arr = a.split(",");
-        module = arr[0];
+      }
         return module;
 
+        }
 
-    }
+
 
     private void updateList() {
             grid.setItems(uiService.findAllResults());
 
 
     }
-private void updateFilterList(){
-    grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
+private void updateFilterList() {
+    if (moduleComboBox.isEmpty()) {
+        updateList();
+    }else{
+
+
+        grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
+    }
 }
+
 
     private HorizontalLayout getContent() {
 
