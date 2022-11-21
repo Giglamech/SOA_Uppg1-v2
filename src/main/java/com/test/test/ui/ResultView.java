@@ -3,9 +3,12 @@ package com.test.test.ui;
 import com.test.test.model.Result;
 import com.test.test.service.UIService;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -45,20 +48,39 @@ public class ResultView extends FormLayout {
         notification.open();
     }
 
-    private void updateStudentList() {
-        if (nameField == null || nameField.isEmpty()) {
-            displayErrorMessage();
-        } else {
+    private com.vaadin.flow.component.dialog.Dialog getErrorDialog() {
+        com.vaadin.flow.component.dialog.Dialog errorDialog = new Dialog();
+        com.vaadin.flow.component.button.Button okButton = new Button("Ok", e -> errorDialog.close());
+        com.vaadin.flow.component.html.Label errorMessage = new Label("Kunde inte hitta det du sökte efter");
+        errorDialog.setCloseOnOutsideClick(false);
+        errorDialog.getFooter().add(okButton);
+        errorDialog.add(errorMessage);
+        return errorDialog;
+    }
 
+    private void updateStudentList() {
+
+
+        try {
             String temp = nameField.getValue().toString();
             testField.setValue(String.valueOf(uiService.getStudent(temp)));
             ssnField.setValue(getSsn(testField.getValue().toString()));
 
-
+        } catch (StringIndexOutOfBoundsException e) {
+            getErrorDialog().open();
         }
 
 
+        //if (nameField == null || nameField.isEmpty()) {
+        //    displayErrorMessage();
+        //} else {
 
+          //  String temp = nameField.getValue().toString();
+            //testField.setValue(String.valueOf(uiService.getStudent(temp)));
+            //ssnField.setValue(getSsn(testField.getValue().toString()));
+
+
+        //}
 
     }
     private String getSsn(String ssn){
