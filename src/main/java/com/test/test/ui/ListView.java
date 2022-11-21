@@ -71,6 +71,7 @@ public class ListView extends VerticalLayout {
             if (filterText.getValue().isEmpty()){
                 updateList();
                 moduleComboBox.clear();
+
             }else {
                 moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
                 moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
