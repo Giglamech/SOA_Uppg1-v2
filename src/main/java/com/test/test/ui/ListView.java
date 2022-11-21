@@ -1,10 +1,7 @@
 package com.test.test.ui;
 
-import com.nimbusds.jose.shaded.json.JSONObject;
 import com.test.test.model.Module;
 import com.test.test.model.Result;
-import com.test.test.model.Student;
-import com.test.test.repository.ModuleRepository;
 import com.test.test.service.UIService;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -13,14 +10,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 
 import java.util.Collections;
 
@@ -116,7 +107,7 @@ private void updateFilterList(){
     return content;
 }
     private void configureForm() {
-            resultView = new ResultView(Collections.emptyList());
+            resultView = new ResultView(Collections.emptyList(), uiService);
             resultView.setWidth("25em");
     }
 

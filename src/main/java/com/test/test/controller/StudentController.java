@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
@@ -27,7 +29,7 @@ public class StudentController {
 }
 
     @GetMapping("/{studentId}")
-    public Student getStudent(@PathVariable String studentId){
+    public List<Student> getStudent(@PathVariable String studentId){
         return studentService.getStudent(studentId);
     }
 }

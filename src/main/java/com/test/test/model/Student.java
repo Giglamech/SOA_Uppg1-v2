@@ -12,8 +12,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Student {
     @Id
-    private String studentId;
+    private String uniqueId;
     private String ssn;
+    private String studentId;
+
 
     public String getStudentId() {
         return studentId;

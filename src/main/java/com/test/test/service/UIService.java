@@ -3,6 +3,7 @@ package com.test.test.service;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.test.test.model.Module;
 import com.test.test.model.Result;
+import com.test.test.model.Student;
 import com.test.test.repository.ModuleRepository;
 import com.test.test.repository.ResultRepository;
 import com.test.test.repository.StudentRepository;
@@ -40,4 +41,9 @@ public class UIService {
 public List<Result> findAllResults(){
         return resultRepository.findAll();
 }
+
+    public List<Student> getStudent(String studentId){
+
+        return studentRepository.getStudent(studentId);
+    }
 }

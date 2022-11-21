@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class StudentService {
@@ -19,12 +20,13 @@ public class StudentService {
     }
 
     public Student addStudent(Student student){
+        student.setUniqueId(UUID.randomUUID().toString().split("-")[0]);
         return studentRepository.save(student);
 
     }
-    public Student getStudent(String studentId){
+    public List<Student> getStudent(String studentId){
 
-        return studentRepository.findById(studentId).get();
+        return studentRepository.getStudent(studentId);
     }
 
 }
