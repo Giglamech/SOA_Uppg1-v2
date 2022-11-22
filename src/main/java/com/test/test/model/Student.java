@@ -16,6 +16,8 @@ public class Student {
     private String ssn;
     private String studentId;
 
+    private String name;
+
     public String getName() {
         return name;
     }
@@ -23,9 +25,6 @@ public class Student {
     public void setName(String name) {
         this.name = name;
     }
-
-    private String name;
-
 
     public String getStudentId() {
         return studentId;

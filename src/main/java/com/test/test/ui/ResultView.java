@@ -1,14 +1,18 @@
 package com.test.test.ui;
 
+import com.test.test.model.Module;
 import com.test.test.model.Result;
 import com.test.test.service.UIService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.TextField;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,22 +21,29 @@ import java.util.regex.Pattern;
 public class ResultView extends FormLayout {
     TextField studentIdField = new TextField("Student-ID");
     TextField ssnField = new TextField("Personnummer");
-    TextField testField = new TextField("Test");
     TextField studentNameField = new TextField("Namn");
-    Button registerResult = new Button("Registrera nytt resultat");
+    Button registerResultButton = new Button("Registrera nytt resultat");
+    DatePicker resultDatePicker = new DatePicker("Ange registreringsdatum");
     private final UIService uiService;
 
+    public String activeModuleName;
+    public String activeCourseCode;
 
-    ComboBox<Result> resultComboBox = new ComboBox<>("Resultat");
+    ComboBox<String> resultComboBox = new ComboBox<>("Resultat");
     ComboBox<String> statusComboBox = new ComboBox<>("Status");
 
+    public List<TextField> requiredTextFields = new ArrayList<TextField>();
+    public List<ComboBox> requiredComboBoxFields = new ArrayList<ComboBox>();
 
     public ResultView(List<Result> results, UIService uiService) {
         this.uiService = uiService;
         addClassName("result-form");
         ssnField.setReadOnly(true);
         studentNameField.setReadOnly(true);
+        resultComboBox.setReadOnly(true);
         studentIdField.addValueChangeListener(e -> updateStudentList());
+        registerResultButton.addClickListener(e -> registerNewResult());
+
         List<String> possibleStatus = new ArrayList<>();
         possibleStatus.add("Utkast");
         possibleStatus.add("Klarmarkerad");
@@ -40,52 +51,90 @@ public class ResultView extends FormLayout {
         possibleStatus.add("Hinder");
         statusComboBox.setItems(possibleStatus);
 
+        DatePicker.DatePickerI18n i18n = new DatePicker.DatePickerI18n();
+        i18n.setDateFormat("yyyy-MM-dd");
+        resultDatePicker.setI18n(i18n);
+        resultDatePicker.setValue(LocalDate.from(LocalDateTime.now()));
+
+
+        requiredTextFields.add(studentNameField);
+        requiredTextFields.add(ssnField);
+        requiredTextFields.add(studentIdField);
+        requiredComboBoxFields.add(resultComboBox);
+        requiredComboBoxFields.add(statusComboBox);
+
         add(
                 studentIdField,
                 ssnField,
                 studentNameField,
                 resultComboBox,
                 statusComboBox,
-                registerResult
+                resultDatePicker,
+                registerResultButton
         );
 
 
     }
-    private void displayErrorMessage () {
+    private void displayErrorMessage (String errorMessage) {
         Notification notification = new Notification();
         notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-        notification.setText("Kunde inte hitta resultat!");
+        notification.setText(errorMessage);
+        notification.setDuration(5000);
         notification.open();
     }
 
     private void updateStudentList() {
         if (studentIdField == null || studentIdField.isEmpty()) {
-            displayErrorMessage();
+            displayErrorMessage("Kunde inte hitta resultat!");
         } else {
-
             String studentResponse = String.valueOf((uiService.getStudent(studentIdField.getValue().toString())));
             ssnField.setValue(getSsn(studentResponse));
             studentNameField.setValue(getName(studentResponse));
+        }
+    }
 
-
-            //String idValue = studentIdField.getValue().toString();
-            //ssnField.setValue(getSsn(String.valueOf(uiService.getStudent(idValue))));
-
-
-
+    private void registerNewResult() {
+        boolean allRequiredFieldsFilled = true;
+        boolean isEmpty;
+        for (TextField field : requiredTextFields) {
+            isEmpty = field.isEmpty();
+            if (isEmpty) {
+                allRequiredFieldsFilled = false;
+                break;
+            }
+        }
+        if (allRequiredFieldsFilled) {
+            for (ComboBox box : requiredComboBoxFields) {
+                isEmpty = box.isEmpty();
+                if (isEmpty) {
+                    allRequiredFieldsFilled = false;
+                    break;
+                }
+            }
+        }
+        if (resultDatePicker.isEmpty()) {
+            allRequiredFieldsFilled = false;
         }
 
-
-
-
+        if (allRequiredFieldsFilled) {
+            String ssn = ssnField.getValue();
+            String date = String.valueOf(resultDatePicker.getValue());
+            String grade = resultComboBox.getValue();
+            String status = statusComboBox.getValue();
+            uiService.registerNewResult(ssn, activeCourseCode, activeModuleName, date, grade, status);
+        } else {
+            displayErrorMessage("Fält saknas för att registrera resultat");
+        }
     }
+
+
     private String getSsn(String ssn){
         Pattern ssnPattern = Pattern.compile("(ssn=)([0-9]+)");
         Matcher ssnMatch = ssnPattern.matcher(ssn);
         if (ssnMatch.find()) {
             return ssnMatch.group(2);
         }
-        return "NULL";
+        return "-";
     }
     private String getName(String name){
         Pattern pattern = Pattern.compile("(name=)([A-Za-z ]+)");
@@ -93,6 +142,6 @@ public class ResultView extends FormLayout {
         if (match.find()) {
             return match.group(2);
         }
-        return "NULL";
+        return "-";
     }
 }

@@ -19,17 +19,20 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-
     @PostMapping
-@ResponseStatus(HttpStatus.CREATED)
-        public Student addStudent(@RequestBody Student student){
-    return studentService.addStudent(student);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Student addStudent(@RequestBody Student student){
+        return studentService.addStudent(student);
+    }
 
-
-}
-
-    @GetMapping("/{studentId}")
+    @GetMapping("/id/{studentId}")
     public List<Student> getStudent(@PathVariable String studentId){
         return studentService.getStudent(studentId);
     }
+
+    @GetMapping("/ssn/{ssn}")
+    public Student getStudentBySsn(@PathVariable String ssn){
+        return studentService.getStudentBySsn(ssn);
+    }
 }
+

@@ -21,91 +21,69 @@ import java.util.Collections;
 
 
 public class ListView extends VerticalLayout {
-
-
     private final UIService uiService;
-
     public Grid<Result> getGrid() {
         return grid;
     }
-
     public void setGrid(Grid<Result> grid) {
         this.grid = grid;
     }
-
     public TextField getFilterText() {
         return filterText;
     }
-
     public void setFilterText(TextField filterText) {
         this.filterText = filterText;
     }
-
     Grid<Result> grid = new Grid<>(Result.class);
-        TextField filterText = new TextField("Kurskod");
-   ComboBox<Module> moduleComboBox = new ComboBox<>("Modul...");
-   TextField filterTextTwo = new TextField();
-    TextField filterTextThree = new TextField();
-    TextField  filterTextFour = new TextField();
-        ResultView resultView;
+    TextField filterText = new TextField("Kurskod");
+    ComboBox<Module> moduleComboBox = new ComboBox<>("Modul...");
+    ResultView resultView;
 
-        public ListView(UIService uiService) {
-            this.uiService = uiService;
-
-
-            addClassName("list-view");
-            setSizeFull();
-            configureGrid();
-            configureForm();
-            
-
-            add(getToolbar(), getContent());
-
-            updateList();
-            updateToolBar();
-
-
-        }
+    public ListView(UIService uiService) {
+        this.uiService = uiService;
+        addClassName("list-view");
+        setSizeFull();
+        configureGrid();
+        configureForm();
+        resultView.requiredComboBoxFields.add(moduleComboBox);
+        add(getToolbar(), getContent());
+        updateList();
+        updateToolBar();
+    }
 
     private void updateToolBar() {
         moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
         moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
         moduleComboBox.setPlaceholder(filterText.getValue());
-
-
-
-
     }
 
     private String getModule(String module){
-
-
         String a = module.substring(37);
         String[] arr = a.split(",");
         module = arr[0];
         return module;
-
-
     }
 
     private void updateList() {
             grid.setItems(uiService.findAllResults());
-
-
     }
-private void updateFilterList(){
-    grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
-}
+
+    private void updateFilterList(){
+        resultView.resultComboBox.setItems(uiService.getAvailableGradesFromModule(String.valueOf((moduleComboBox.getValue()))));
+        resultView.resultComboBox.setReadOnly(false);
+        resultView.activeModuleName = String.valueOf(moduleComboBox.getValue());
+        resultView.activeCourseCode = String.valueOf(filterText.getValue());
+        grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
+    }
 
     private HorizontalLayout getContent() {
-
-    HorizontalLayout content = new HorizontalLayout(grid, resultView);
-    content.setFlexGrow(2, grid);
-    content.setFlexGrow(1,resultView);
-    content.addClassName("content");
-    content.setSizeFull();
-    return content;
-}
+        HorizontalLayout content = new HorizontalLayout(grid, resultView);
+        content.setFlexGrow(2, grid);
+        content.setFlexGrow(1,resultView);
+        content.addClassName("content");
+        content.setSizeFull();
+        return content;
+    }
     private void configureForm() {
             resultView = new ResultView(Collections.emptyList(), uiService);
             resultView.setWidth("25em");
@@ -114,12 +92,9 @@ private void updateFilterList(){
     private void configureGrid() {
             grid.addClassNames("contact-grid");
             grid.setSizeFull();
-            grid.setColumns("namn", "grade", "module", "courseNr", "date", "status");
+            grid.setColumns("name", "grade", "module", "courseNr", "date", "status");
             grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
-
         }
-
 
     private HorizontalLayout getToolbar() {
             filterText.setPlaceholder("Sök på en kurskod...");

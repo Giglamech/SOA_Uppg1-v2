@@ -9,4 +9,8 @@ import java.util.List;
 public interface StudentRepository extends MongoRepository<Student, String> {
 @Query("{'studentId': ?0}")
 List<Student> getStudent(String studentId);
+
+@Query("{'ssn': ?0}")
+Student findBySsn(String ssn);
+
 }

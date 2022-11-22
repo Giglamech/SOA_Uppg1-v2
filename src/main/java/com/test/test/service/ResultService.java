@@ -2,6 +2,7 @@ package com.test.test.service;
 
 import com.test.test.model.Result;
 import com.test.test.repository.ResultRepository;
+import com.test.test.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +13,22 @@ import java.util.UUID;
 public class ResultService {
     @Autowired
     private final ResultRepository resultRepository;
+    private final StudentRepository studentRepository;
 
-    public ResultService(ResultRepository resultRepository) {
+    public ResultService(ResultRepository resultRepository, StudentRepository studentRepository) {
         this.resultRepository = resultRepository;
+        this.studentRepository = studentRepository;
     }
 
 
     public List <Result> getResult(String moduleNr){
-    return resultRepository.findByModule(moduleNr);
-
+        List<Result> result = resultRepository.findByModule(moduleNr);
+        for (Result res : result) {
+            if(res.getName() == null) {
+                res.setName(studentRepository.findBySsn(res.getSsn()).getName());
+            }
+        }
+        return result;
     }
 
     public Result addResult(Result result){

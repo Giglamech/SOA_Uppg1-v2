@@ -25,8 +25,10 @@ public class StudentService {
 
     }
     public List<Student> getStudent(String studentId){
-
         return studentRepository.getStudent(studentId);
     }
 
+    public Student getStudentBySsn(String ssn) {
+        return studentRepository.findBySsn(ssn);
+    }
 }

@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Result {
     @Id
     private String resultId;
-    private String namn;
+    private String name;
     private String ssn;
     private String courseNr;
     private String module;
@@ -29,12 +29,12 @@ public class Result {
         this.resultId = resultId;
     }
 
-    public String getNamn() {
-        return namn;
+    public String getName() {
+        return name;
     }
 
-    public void setNamn(String namn) {
-        this.namn = namn;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSsn() {
