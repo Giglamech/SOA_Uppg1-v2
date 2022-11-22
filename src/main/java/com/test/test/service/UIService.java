@@ -7,6 +7,9 @@ import com.test.test.model.Student;
 import com.test.test.repository.ModuleRepository;
 import com.test.test.repository.ResultRepository;
 import com.test.test.repository.StudentRepository;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Label;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -78,4 +81,13 @@ public class UIService {
         return null;
     }
 
+    public com.vaadin.flow.component.dialog.Dialog getErrorDialog() {
+        com.vaadin.flow.component.dialog.Dialog errorDialog = new Dialog();
+        com.vaadin.flow.component.button.Button okButton = new Button("Ok", e -> errorDialog.close());
+        com.vaadin.flow.component.html.Label errorMessage = new Label("Kunde inte hitta det du sökte efter");
+        errorDialog.setCloseOnOutsideClick(false);
+        errorDialog.getFooter().add(okButton);
+        errorDialog.add(errorMessage);
+        return errorDialog;
+    }
 }

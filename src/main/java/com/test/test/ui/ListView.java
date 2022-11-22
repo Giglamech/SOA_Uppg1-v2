@@ -52,29 +52,52 @@ public class ListView extends VerticalLayout {
     }
 
     private void updateToolBar() {
-        moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
-        moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
-        moduleComboBox.setPlaceholder(filterText.getValue());
+            if (filterText.getValue().isEmpty()){
+                updateList();
+                moduleComboBox.clear();
+
+            }else {
+                moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
+                moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
+                moduleComboBox.setPlaceholder(filterText.getValue());
+            }
+
+
+
     }
 
-    private String getModule(String module){
-        String a = module.substring(37);
-        String[] arr = a.split(",");
-        module = arr[0];
+    private String getModule(String module) {
+
+      try {
+          String a = module.substring(37);
+          String[] arr = a.split(",");
+          module = arr[0];
+          return module;
+      }
+      catch (IndexOutOfBoundsException ignored){
+
+      }
         return module;
-    }
+
+        }
+
+
 
     private void updateList() {
             grid.setItems(uiService.findAllResults());
     }
 
-    private void updateFilterList(){
+private void updateFilterList() {
+    if (moduleComboBox.isEmpty()) {
+        updateList();
+    }else{
         resultView.resultComboBox.setItems(uiService.getAvailableGradesFromModule(String.valueOf((moduleComboBox.getValue()))));
         resultView.resultComboBox.setReadOnly(false);
         resultView.activeModuleName = String.valueOf(moduleComboBox.getValue());
         resultView.activeCourseCode = String.valueOf(filterText.getValue());
         grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
     }
+}
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, resultView);

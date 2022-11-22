@@ -3,13 +3,20 @@ package com.test.test.ui;
 import com.test.test.model.Module;
 import com.test.test.model.Result;
 import com.test.test.service.UIService;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.TextField;
+import org.atmosphere.interceptor.AtmosphereResourceStateRecovery;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,6 +46,7 @@ public class ResultView extends FormLayout {
         this.uiService = uiService;
         addClassName("result-form");
         ssnField.setReadOnly(true);
+        //nameField.addValueChangeListener(e -> updateStudentList());
         studentNameField.setReadOnly(true);
         resultComboBox.setReadOnly(true);
         studentIdField.addValueChangeListener(e -> updateStudentList());
@@ -64,6 +72,8 @@ public class ResultView extends FormLayout {
         requiredComboBoxFields.add(statusComboBox);
 
         add(
+                nameField,
+                getSearchButton(),
                 studentIdField,
                 ssnField,
                 studentNameField,
@@ -81,6 +91,15 @@ public class ResultView extends FormLayout {
         notification.setText(errorMessage);
         notification.setDuration(5000);
         notification.open();
+    }
+
+    private com.vaadin.flow.component.dialog.Dialog getErrorDialog() {
+        com.vaadin.flow.component.dialog.Dialog errorDialog = new Dialog();
+        com.vaadin.flow.component.button.Button okButton = new Button("Ok", e -> errorDialog.close());
+        com.vaadin.flow.component.html.Label errorMessage = new Label("Kunde inte hitta det du sökte efter");
+        errorDialog.getFooter().add(okButton);
+        errorDialog.add(errorMessage);
+        return errorDialog;
     }
 
     private void updateStudentList() {
@@ -128,6 +147,12 @@ public class ResultView extends FormLayout {
     }
 
 
+    private Button getSearchButton() {
+        Button searchButton = new Button("Sök");
+        searchButton.addClickListener(e -> updateStudentList());
+        searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        return searchButton;
+    }
     private String getSsn(String ssn){
         Pattern ssnPattern = Pattern.compile("(ssn=)([0-9]+)");
         Matcher ssnMatch = ssnPattern.matcher(ssn);
