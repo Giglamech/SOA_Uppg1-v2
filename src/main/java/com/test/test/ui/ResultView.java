@@ -72,7 +72,6 @@ public class ResultView extends FormLayout {
         requiredComboBoxFields.add(statusComboBox);
 
         add(
-                nameField,
                 getSearchButton(),
                 studentIdField,
                 ssnField,
