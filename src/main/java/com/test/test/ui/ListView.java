@@ -130,10 +130,6 @@ private void updateFilterList(){
             moduleComboBox.addValueChangeListener(e -> updateFilterList());
             moduleComboBox.setWidthFull();
 
-
-
-
-
             HorizontalLayout toolbar = new HorizontalLayout(filterText, moduleComboBox);
             toolbar.addClassName("toolbar");
             return toolbar;

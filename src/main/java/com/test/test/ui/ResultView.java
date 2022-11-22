@@ -2,38 +2,51 @@ package com.test.test.ui;
 
 import com.test.test.model.Result;
 import com.test.test.service.UIService;
-import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.TextField;
 
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ResultView extends FormLayout {
-    TextField nameField = new TextField("Student-ID");
+    TextField studentIdField = new TextField("Student-ID");
     TextField ssnField = new TextField("Personnummer");
     TextField testField = new TextField("Test");
+    TextField studentNameField = new TextField("Namn");
+    Button registerResult = new Button("Registrera nytt resultat");
     private final UIService uiService;
 
 
-    ComboBox<Result> module = new ComboBox<>("Resultat");
+    ComboBox<Result> resultComboBox = new ComboBox<>("Resultat");
+    ComboBox<String> statusComboBox = new ComboBox<>("Status");
+
 
     public ResultView(List<Result> results, UIService uiService) {
         this.uiService = uiService;
         addClassName("result-form");
         ssnField.setReadOnly(true);
-        nameField.addValueChangeListener(e -> updateStudentList());
-
+        studentNameField.setReadOnly(true);
+        studentIdField.addValueChangeListener(e -> updateStudentList());
+        List<String> possibleStatus = new ArrayList<>();
+        possibleStatus.add("Utkast");
+        possibleStatus.add("Klarmarkerad");
+        possibleStatus.add("Attesterad");
+        possibleStatus.add("Hinder");
+        statusComboBox.setItems(possibleStatus);
 
         add(
-                nameField,
+                studentIdField,
                 ssnField,
-                module
+                studentNameField,
+                resultComboBox,
+                statusComboBox,
+                registerResult
         );
 
 
@@ -46,13 +59,18 @@ public class ResultView extends FormLayout {
     }
 
     private void updateStudentList() {
-        if (nameField == null || nameField.isEmpty()) {
+        if (studentIdField == null || studentIdField.isEmpty()) {
             displayErrorMessage();
         } else {
 
-            String temp = nameField.getValue().toString();
-            testField.setValue(String.valueOf(uiService.getStudent(temp)));
-            ssnField.setValue(getSsn(testField.getValue().toString()));
+            String studentResponse = String.valueOf((uiService.getStudent(studentIdField.getValue().toString())));
+            ssnField.setValue(getSsn(studentResponse));
+            studentNameField.setValue(getName(studentResponse));
+
+
+            //String idValue = studentIdField.getValue().toString();
+            //ssnField.setValue(getSsn(String.valueOf(uiService.getStudent(idValue))));
+
 
 
         }
@@ -62,10 +80,19 @@ public class ResultView extends FormLayout {
 
     }
     private String getSsn(String ssn){
-        String a = ssn.substring(32);
-        String[] arr = a.split(",");
-        ssn = arr[0];
-
-    return ssn;
+        Pattern ssnPattern = Pattern.compile("(ssn=)([0-9]+)");
+        Matcher ssnMatch = ssnPattern.matcher(ssn);
+        if (ssnMatch.find()) {
+            return ssnMatch.group(2);
+        }
+        return "NULL";
+    }
+    private String getName(String name){
+        Pattern pattern = Pattern.compile("(name=)([A-Za-z ]+)");
+        Matcher match = pattern.matcher(name);
+        if (match.find()) {
+            return match.group(2);
+        }
+        return "NULL";
     }
 }

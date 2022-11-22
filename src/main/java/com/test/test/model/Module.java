@@ -21,7 +21,7 @@ public class Module {
     @NonNull
     private String moduleType;
     @NonNull
-    private String[] assignments;
+    private String[] grades;
 
     public String getModuleId() {
         return moduleId;
@@ -55,12 +55,12 @@ public class Module {
         this.moduleType = moduleType;
     }
 
-    public String[] getAssignments() {
-        return assignments;
+    public String[] getGrades() {
+        return grades;
     }
 
-    public void setAssignments(String[] assignments) {
-        this.assignments = assignments;
+    public void setGrades(String[] assignments) {
+        this.grades = assignments;
     }
 
 
