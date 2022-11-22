@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,14 +72,15 @@ public class UIService {
         Matcher match = pattern.matcher(module);
         if (match.find()) {
             String grades = match.group(2);
-            //grades.replace(" ", "");
             return new ArrayList<>(Arrays.asList(grades.split(",")));
         }
         return null;
     }
 
-    public Result registerNewResult(String ssn, String courseCode, String moduleCode, String date, String grade, String status) {
-        return null;
+    public void registerNewResult(String ssn, String courseCode, String moduleCode, String date, String grade, String status) {
+        Result result = new Result(ssn,courseCode,moduleCode,date,grade,status);
+        result.setResultId(UUID.randomUUID().toString().split("-")[0]);
+        resultRepository.save(result);
     }
 
     public com.vaadin.flow.component.dialog.Dialog getErrorDialog() {

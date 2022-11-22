@@ -21,6 +21,15 @@ public class Result {
     private String grade;
     private String status;
 
+    public Result(String ssn, String courseCode, String moduleCode, String date, String grade, String status) {
+        this.ssn = ssn;
+        this.courseNr = courseCode;
+        this.module = moduleCode;
+        this.date = date;
+        this.grade = grade;
+        this.status = status;
+    }
+
     public String getResultId() {
         return resultId;
     }

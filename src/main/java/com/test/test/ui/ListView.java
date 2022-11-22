@@ -14,6 +14,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @PageTitle("Registrering av studieresultat")
@@ -93,7 +95,7 @@ private void updateFilterList() {
     }else{
         resultView.resultComboBox.setItems(uiService.getAvailableGradesFromModule(String.valueOf((moduleComboBox.getValue()))));
         resultView.resultComboBox.setReadOnly(false);
-        resultView.activeModuleName = String.valueOf(moduleComboBox.getValue());
+        resultView.activeModuleName = getModuleCode(String.valueOf(moduleComboBox.getValue()));
         resultView.activeCourseCode = String.valueOf(filterText.getValue());
         grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
     }
@@ -132,6 +134,15 @@ private void updateFilterList() {
             toolbar.addClassName("toolbar");
             return toolbar;
         }
+
+    private String getModuleCode(String module){
+        Pattern pattern = Pattern.compile("(moduleCode=)([A-Za-z0-9 _]+)(,)");
+        Matcher match = pattern.matcher(module);
+        if (match.find()) {
+            return match.group(2);
+        }
+        return "-";
     }
+}
 
 

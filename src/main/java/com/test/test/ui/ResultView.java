@@ -37,7 +37,7 @@ public class ResultView extends FormLayout {
     public String activeCourseCode;
 
     ComboBox<String> resultComboBox = new ComboBox<>("Resultat");
-    ComboBox<String> statusComboBox = new ComboBox<>("Status");
+     ComboBox<String> statusComboBox = new ComboBox<>("Status");
 
     public List<TextField> requiredTextFields = new ArrayList<TextField>();
     public List<ComboBox> requiredComboBoxFields = new ArrayList<ComboBox>();
@@ -92,10 +92,10 @@ public class ResultView extends FormLayout {
         notification.open();
     }
 
-    private com.vaadin.flow.component.dialog.Dialog getErrorDialog() {
+    private com.vaadin.flow.component.dialog.Dialog getErrorDialog(String message) {
         com.vaadin.flow.component.dialog.Dialog errorDialog = new Dialog();
         com.vaadin.flow.component.button.Button okButton = new Button("Ok", e -> errorDialog.close());
-        com.vaadin.flow.component.html.Label errorMessage = new Label("Kunde inte hitta det du sökte efter");
+        com.vaadin.flow.component.html.Label errorMessage = new Label(message);
         errorDialog.getFooter().add(okButton);
         errorDialog.add(errorMessage);
         return errorDialog;
@@ -140,6 +140,7 @@ public class ResultView extends FormLayout {
             String grade = resultComboBox.getValue();
             String status = statusComboBox.getValue();
             uiService.registerNewResult(ssn, activeCourseCode, activeModuleName, date, grade, status);
+            displayErrorMessage("Nytt resultat har registrerats");
         } else {
             displayErrorMessage("Fält saknas för att registrera resultat");
         }
