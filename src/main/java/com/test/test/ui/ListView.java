@@ -89,24 +89,24 @@ public class ListView extends VerticalLayout {
             grid.setItems(uiService.findAllResults());
     }
 
-private void updateFilterList() {
-    if (moduleComboBox.isEmpty()) {
-        updateList();
-    }else {
-    try {
+    private void updateFilterList() {
+        if (moduleComboBox.isEmpty()) {
+            updateList();
+        } else {
+            try {
 
 
-        resultView.resultComboBox.setItems(uiService.getAvailableGradesFromModule(String.valueOf((moduleComboBox.getValue()))));
-        resultView.resultComboBox.setReadOnly(false);
-        resultView.activeModuleName = getModuleCode(String.valueOf(moduleComboBox.getValue()));
-        resultView.activeCourseCode = String.valueOf(filterText.getValue());
-        grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
-    }
-    catch (NullPointerException ignore){
+                resultView.resultComboBox.setItems(uiService.getAvailableGradesFromModule(String.valueOf((moduleComboBox.getValue()))));
+                resultView.resultComboBox.setReadOnly(false);
+                resultView.activeModuleName = getModuleCode(String.valueOf(moduleComboBox.getValue()));
+                resultView.activeCourseCode = String.valueOf(filterText.getValue());
+                grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
+            }
+            catch (NullPointerException ignore){
 
+            }
+        }
     }
-    }
-}
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, resultView);
