@@ -4,14 +4,13 @@ import com.test.test.model.Module;
 import com.test.test.model.Result;
 import com.test.test.service.UIService;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
-import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.data.value.ValueChangeMode;
 
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -58,32 +57,25 @@ public class ListView extends VerticalLayout {
                 updateList();
                 moduleComboBox.clear();
 
-            }else {
+            } else {
                 moduleComboBox.setItems(uiService.getModules(filterText.getValue()));
                 moduleComboBox.setItemLabelGenerator(Module::getModuleCode);
                 moduleComboBox.setPlaceholder(filterText.getValue());
             }
-
-
-
     }
 
     private String getModule(String module) {
-
-      try {
+        try {
           String a = module.substring(37);
           String[] arr = a.split(",");
           module = arr[0];
           return module;
-      }
-      catch (IndexOutOfBoundsException ignored){
-
-      }
-        return module;
+        }
+        catch (IndexOutOfBoundsException ignored){
 
         }
-
-
+        return module;
+    }
 
     private void updateList() {
             grid.setItems(uiService.findAllResults());
@@ -94,8 +86,6 @@ public class ListView extends VerticalLayout {
             updateList();
         } else {
             try {
-
-
                 resultView.resultComboBox.setItems(uiService.getAvailableGradesFromModule(String.valueOf((moduleComboBox.getValue()))));
                 resultView.resultComboBox.setReadOnly(false);
                 resultView.activeModuleName = getModuleCode(String.valueOf(moduleComboBox.getValue()));
@@ -103,7 +93,6 @@ public class ListView extends VerticalLayout {
                 grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
             }
             catch (NullPointerException ignore){
-
             }
         }
     }
@@ -117,30 +106,30 @@ public class ListView extends VerticalLayout {
         return content;
     }
     private void configureForm() {
-            resultView = new ResultView(Collections.emptyList(), uiService);
-            resultView.setWidth("25em");
+        resultView = new ResultView(Collections.emptyList(), uiService);
+        resultView.setWidth("25em");
     }
 
     private void configureGrid() {
-            grid.addClassNames("contact-grid");
-            grid.setSizeFull();
-            grid.setColumns("name", "grade", "module", "courseNr", "date", "status");
-            grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        }
+        grid.addClassNames("contact-grid");
+        grid.setSizeFull();
+        grid.setColumns("name", "grade", "module", "courseNr", "date", "status");
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+    }
 
     private HorizontalLayout getToolbar() {
-            filterText.setPlaceholder("Sök på en kurskod...");
-            filterText.setClearButtonVisible(true);
-            filterText.setValueChangeMode(ValueChangeMode.LAZY);
-            filterText.addValueChangeListener(e -> updateList());
-            filterText.addValueChangeListener(e -> updateToolBar());
-            moduleComboBox.addValueChangeListener(e -> updateFilterList());
-            moduleComboBox.setWidthFull();
+        filterText.setPlaceholder("Sök på en kurskod...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
+        filterText.addValueChangeListener(e -> updateToolBar());
+        moduleComboBox.addValueChangeListener(e -> updateFilterList());
+        moduleComboBox.setWidthFull();
 
-            HorizontalLayout toolbar = new HorizontalLayout(filterText, moduleComboBox);
-            toolbar.addClassName("toolbar");
-            return toolbar;
-        }
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, moduleComboBox);
+        toolbar.addClassName("toolbar");
+        return toolbar;
+    }
 
     private String getModuleCode(String module){
         Pattern pattern = Pattern.compile("(moduleCode=)([A-Za-z0-9 _]+)(,)");

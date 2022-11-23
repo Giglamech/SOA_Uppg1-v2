@@ -1,9 +1,7 @@
 package com.test.test.service;
 
-import com.nimbusds.jose.shaded.json.JSONObject;
 import com.test.test.model.Module;
 import com.test.test.repository.ModuleRepository;
-import elemental.json.JsonException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,6 @@ public class ModuleService {
     public ModuleService(ModuleRepository moduleRepository) {
         this.moduleRepository = moduleRepository;
     }
-
 
     public List<Module> getModules(String courseCode){
         return moduleRepository.findBycourse(courseCode);

@@ -1,22 +1,17 @@
 package com.test.test.ui;
 
-import com.test.test.model.Module;
 import com.test.test.model.Result;
 import com.test.test.service.UIService;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.TextField;
-import org.atmosphere.interceptor.AtmosphereResourceStateRecovery;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -63,7 +58,6 @@ public class ResultView extends FormLayout {
         i18n.setDateFormat("yyyy-MM-dd");
         resultDatePicker.setI18n(i18n);
         resultDatePicker.setValue(LocalDate.from(LocalDateTime.now()));
-
 
         requiredTextFields.add(studentNameField);
         requiredTextFields.add(ssnField);
@@ -133,7 +127,6 @@ public class ResultView extends FormLayout {
         if (resultDatePicker.isEmpty()) {
             allRequiredFieldsFilled = false;
         }
-
         if (allRequiredFieldsFilled) {
             String ssn = ssnField.getValue();
             String date = String.valueOf(resultDatePicker.getValue());
@@ -145,7 +138,6 @@ public class ResultView extends FormLayout {
             displayErrorMessage("Fält saknas för att registrera resultat");
         }
     }
-
 
     private Button getSearchButton() {
         Button searchButton = new Button("Sök");

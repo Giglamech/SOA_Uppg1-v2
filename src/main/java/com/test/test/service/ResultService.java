@@ -20,7 +20,6 @@ public class ResultService {
         this.studentRepository = studentRepository;
     }
 
-
     public List <Result> getResult(String moduleNr){
         List<Result> result = resultRepository.findByModule(moduleNr);
         for (Result res : result) {
@@ -34,8 +33,6 @@ public class ResultService {
     public Result addResult(Result result){
         result.setResultId(UUID.randomUUID().toString().split("-")[0]);
         return resultRepository.save(result);
-
-
     }
 
 }

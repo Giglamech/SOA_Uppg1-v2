@@ -4,7 +4,6 @@ import com.test.test.model.Result;
 import com.test.test.service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +18,12 @@ public class ResultController {
     public ResultController(ResultService resultservice) {
         this.resultservice = resultservice;
     }
-@GetMapping("{moduleNr}")
-public List <Result> getResult(@PathVariable String moduleNr){
-    return resultservice.getResult(moduleNr);
 
-}
+    @GetMapping("{moduleNr}")
+    public List <Result> getResult(@PathVariable String moduleNr){
+        return resultservice.getResult(moduleNr);
+
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
