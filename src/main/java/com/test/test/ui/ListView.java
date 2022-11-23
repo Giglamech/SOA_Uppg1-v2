@@ -92,12 +92,19 @@ public class ListView extends VerticalLayout {
 private void updateFilterList() {
     if (moduleComboBox.isEmpty()) {
         updateList();
-    }else{
+    }else {
+    try {
+
+
         resultView.resultComboBox.setItems(uiService.getAvailableGradesFromModule(String.valueOf((moduleComboBox.getValue()))));
         resultView.resultComboBox.setReadOnly(false);
         resultView.activeModuleName = getModuleCode(String.valueOf(moduleComboBox.getValue()));
         resultView.activeCourseCode = String.valueOf(filterText.getValue());
         grid.setItems(uiService.findAllResultsFilter(getModule((String.valueOf(moduleComboBox.getValue())))));
+    }
+    catch (NullPointerException ignore){
+
+    }
     }
 }
 

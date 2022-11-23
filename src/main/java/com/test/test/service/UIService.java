@@ -67,7 +67,6 @@ public class UIService {
     }
 
     public List<String> getAvailableGradesFromModule(String module) {
-        System.out.println(module);
         Pattern pattern = Pattern.compile("(grades=\\[)([A-Za-z, ]+)(\\])");
         Matcher match = pattern.matcher(module);
         if (match.find()) {
